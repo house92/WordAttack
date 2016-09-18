@@ -1,0 +1,51 @@
+body {
+  padding: 40px;
+}
+
+.main {
+  width:100%;
+  text-align:center;
+}
+
+.secs {
+  position:absolute;
+}
+
+#answer {
+  margin: 10px 40px;
+}
+
+#easy.clicked {
+  background-color:#00cc00;
+}
+
+#medium.clicked {
+  background-color:#ffa500;
+}
+
+#hard.clicked {
+  background-color:#ff4d4d;
+}
+
+#select1,
+#select2 {
+  max-width:100px;
+  margin-bottom:20px;
+}
+
+#select > select{
+  display:inline-block;
+}
+
+#word {
+  border: 1px solid black;
+  min-height:40px;
+  text-align:center;
+  padding-top:8px;
+  position:relative;
+  right:160px;
+}
+
+.info {
+  padding: 10px 0;
+}

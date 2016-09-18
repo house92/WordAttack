@@ -1,0 +1,15 @@
+{
+    "to accept": "annehmen",
+    "to accompany": "begleiten",
+    "to advise": "beraten",
+    "to advise": "raten",
+    "to allow": "erlauben",
+    "to answer": "antworten",
+    "to answer": "beantworten",
+    "to apply for": "sich bewerben um",
+    "to argue": "sich streiten",
+    "to argue": "streiten",
+    "to arrive": "ankommen",
+    "to ask": "fragen",
+    "to ask a question": "eine Frage stellen",
+};
