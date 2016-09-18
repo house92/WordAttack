@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Word Attack!</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/bootstrap-select.css">
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="js/bootstrap-select.js"></script>
+  <script src="js/jQuery.js"></script>
+
+</head>
+<body>
+  <div class="header">
+    <div class="container">
+      <h1>Word Attack</h1>
+    </div>
+  </div>
+
+  <div class="text">
+    <div class="row">
+      <div class="col-md-8">
+        <input id="answer" type="text" placeholder="Type translation here" />
+      </div>
+      <div class="col-md-4">
+        <div id="select2">
+          <select id="lang" class="selectpicker">
+            <option value="German">
+              German
+            </option>
+            <option value="Japanese">
+              Japanese
+            </option>
+          </select>
+        </div>
+        <div id="select1">
+          <select id="module" class="selectpicker">
+            <option value="Verbs I">
+              Verbs I
+            </option>
+            <option value="Verbs II">
+              Verbs II
+            </option>
+            <option value="Verbs III">
+              Verbs III
+            </option>
+          </select>
+        </div>
+        <div id="word">
+
+        </div>
+        <h5 class="secs"><span id="wordCountdown"></span> secs</h5>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="container">
+      <ul>
+        <li id="start" class="timer btn btn-primary">
+          Start
+        </li>
+        <br />
+        <br />
+        <li id="easy" class="clicked btn btn-default">
+          Easy
+        </li>
+        <li id="medium" class="btn btn-default">
+          Medium
+        </li>
+        <li id="hard" class="btn btn-default">
+          Hard
+        </li>
+      </ul>
+      <div class="info">
+        <div>
+          <h4>Time remaining:</h4>
+          <h5><span id="countdown"></span> secs</h5>
+        </div>
+        <div>
+          <h4>Score:</h4>
+          <h5 id="score">0</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- bootstrap-select -->
+  <link rel="stylesheet" href="css/bootstrap-select.css">
+  <script src="js/bootstrap-select.js"></script>
+  
+</body>
+</html>
