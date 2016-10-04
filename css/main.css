@@ -37,6 +37,12 @@ body {
   display:inline-block;
 }
 
+.selectpicker {
+  font-size:18px;
+  width:100px;
+  height:50px;
+}
+
 #word {
   border: 1px solid black;
   min-height:40px;
