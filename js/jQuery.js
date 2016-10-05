@@ -2,6 +2,8 @@
 $(document).ready(function() {
   vocabList();
 
+  var open = false;
+
   // WORD
   function drop(word) {
     word.id = "currWord";
@@ -44,8 +46,6 @@ $(document).ready(function() {
   var score = 0;
   $('#score').text(score);
 
-  vocabList();
-
   var keyArray = Object.keys(vocab);
   var content = "";
 
@@ -62,6 +62,10 @@ $(document).ready(function() {
     $('#score').text(score);
     vocabList();
     keyArray = Object.keys(vocab);
+
+    if (open) {
+      OpenWindow.close();
+    }
 
     //STOP BUTTON
     $('#stop').click(function() {
@@ -157,6 +161,7 @@ $(document).ready(function() {
 
   });
 
+  // VOCAB LIST WINDOW
   var keyList = "";
   var valList = "";
   function readList() {
@@ -167,6 +172,9 @@ $(document).ready(function() {
     };
   };
   $('#view').click(function() {
+    open = true;
+    vocabList();
+    readList();
     OpenWindow=window.open("", "newwin", "height=700, width=500,toolbar=no,scrollbars="+scroll+",menubar=no");
     OpenWindow.document.write("<TITLE>")
     OpenWindow.document.write($('#module').val())
@@ -184,6 +192,23 @@ $(document).ready(function() {
     OpenWindow.document.write(valList)
     OpenWindow.document.write("</p>")
     OpenWindow.document.write("</div>")
+    OpenWindow.document.write("</BODY>")
+    OpenWindow.document.write("</HTML>")
+  })
+
+  // INSTRUCTIONS WINDOW
+  $('#instructions').click(function() {
+    open = true;
+    OpenWindow=window.open("", "newwin", "height=500, width=500,toolbar=no,scrollbars="+scroll+",menubar=no");
+    OpenWindow.document.write("<TITLE>")
+    OpenWindow.document.write("Instructions")
+    OpenWindow.document.write("</TITLE>")
+    OpenWindow.document.write("<link type='text/css' rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' />")
+    OpenWindow.document.write("<BODY>")
+    OpenWindow.document.write("<h2 style='text-decoration:underline; margin-left:10px;'>Instructions</h2>")
+    OpenWindow.document.write("<p style='margin-left:10px;'>")
+    OpenWindow.document.write("- Select difficult using the 'Easy', 'Medium' and 'Hard' buttons. <br>- Use the dropdown menus above the challenge box to select your language and vocab list. Click on 'View vocab list' to see the accepted translation for each word. <br>- Once all settings have been selected, click the 'Start' button to initiate the game. You will have 60 seconds to translate as many words as possible, with a timer on each individual word depending on your difficulty setting. You must hit the enter key to submit your answer. <br>- You will be awarded: <br> <ul><li>5 points for a correct answer on the first attempt.</li> <li>2 points if more than one attempt required.</li></ul>")
+    OpenWindow.document.write("</p>")
     OpenWindow.document.write("</BODY>")
     OpenWindow.document.write("</HTML>")
   })
