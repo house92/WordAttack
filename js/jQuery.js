@@ -1,6 +1,6 @@
 
 $(document).ready(function() {
-  var vocab = "";
+  vocabList();
 
   // WORD
   function drop(word) {
@@ -63,6 +63,12 @@ $(document).ready(function() {
     vocabList();
     keyArray = Object.keys(vocab);
 
+    //STOP BUTTON
+    $('#stop').click(function() {
+      remaining = 0;
+      $('#start').text("Start");
+    });
+
     // MAIN TIMER
     $('#start').text("Reset");
     if (counting == false) {
@@ -79,6 +85,7 @@ $(document).ready(function() {
           $('.secs').hide();
           $('#wordCountdown').hide();
           $('#currWord').remove();
+          $('#view').show();
           remaining = 0;
           $('#countdown').text(remaining);
           counting = false;
@@ -89,6 +96,7 @@ $(document).ready(function() {
     // WORD TIMER
     $('.secs').show();
     $('#wordCountdown').show();
+    $('#view').hide();
     if (counting == false) {
       setTime = wordRemaining;;
       var wordCountdown = setInterval(function() {
@@ -149,6 +157,37 @@ $(document).ready(function() {
 
   });
 
+  var keyList = "";
+  var valList = "";
+  function readList() {
+    keyList = Object.keys(vocab).join("<br>");
+    valList = "";
+    for (var v in vocab) {
+      valList += vocab[v] + "<br>";
+    };
+  };
+  $('#view').click(function() {
+    OpenWindow=window.open("", "newwin", "height=700, width=500,toolbar=no,scrollbars="+scroll+",menubar=no");
+    OpenWindow.document.write("<TITLE>")
+    OpenWindow.document.write($('#module').val())
+    OpenWindow.document.write("</TITLE>")
+    OpenWindow.document.write("<link type='text/css' rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' />")
+    OpenWindow.document.write("<BODY>")
+    OpenWindow.document.write("<div class='row'>")
+    OpenWindow.document.write("<div class='col-xs-6' style='margin-left:10px;'>")
+    OpenWindow.document.write("<p>")
+    OpenWindow.document.write(keyList)
+    OpenWindow.document.write("</p>")
+    OpenWindow.document.write("</div>")
+    OpenWindow.document.write("<div class='col-xs-6' style='margin-left:-10px;'>")
+    OpenWindow.document.write("<p>")
+    OpenWindow.document.write(valList)
+    OpenWindow.document.write("</p>")
+    OpenWindow.document.write("</div>")
+    OpenWindow.document.write("</BODY>")
+    OpenWindow.document.write("</HTML>")
+  })
+
   $('#select1').click(function() {
     $('#select1 .btn-group.bootstrap-select').toggleClass("open");
   });
@@ -156,7 +195,8 @@ $(document).ready(function() {
     $('#select2 .btn-group.bootstrap-select').toggleClass("open");
   });
 
-  $('select').change(vocabList());
+  // GENERATE VOCAB LISTS
+  $('#module').change(vocabList());
   $('#lang').change(function() {
     if ($('#lang').val() == "German") {
       $('#module option').remove();
@@ -193,7 +233,7 @@ $(document).ready(function() {
 
   function vocabList() {
     vocab = "";
-    // VOCAB LIST
+    // VOCAB LIST SELECTION
     if ($('#lang').val() == "German") {
       if ($('#module').val() == "Verbs I") {
         vocab = {
@@ -394,5 +434,6 @@ $(document).ready(function() {
         };
       }
     }
+    readList();
   }
 });

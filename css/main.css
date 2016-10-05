@@ -12,7 +12,8 @@ body {
 }
 
 #answer {
-  margin: 10px 40px;
+  margin: 5% 15%;
+  padding: 5px 10px;
 }
 
 #easy.clicked {
