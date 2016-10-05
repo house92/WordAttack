@@ -11,8 +11,12 @@ body {
   margin: inherit;
 }
 
+#enter {
+    margin: 0 15% 2%;
+}
+
 #answer {
-  margin: 5% 15%;
+  margin: 0 15% 5%;
   padding: 5px 10px;
 }
 
@@ -73,7 +77,8 @@ body {
 }
 
 #view:hover,
-#instructions:hover {
+#instructions:hover,
+.glyphicon-refresh:hover {
   cursor:pointer;
   color:#0645AD;
 }

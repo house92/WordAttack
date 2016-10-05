@@ -14,6 +14,17 @@ $(document).ready(function() {
     wordRemaining = setTime;
   };
 
+  // TRANSLATION DIRECTION
+  $('.glyphicon-refresh').click(function() {
+    console.log(valArray)
+    if ($('#targetLang').text() == "English") {
+      $('#targetLang').text($('#lang').val());
+    }
+    else {
+      $('#targetLang').text("English");
+    }
+  })
+
   // DIFFICULT TIMER
   var difficulty = 10000;
   var counting = false;
@@ -46,8 +57,17 @@ $(document).ready(function() {
   var score = 0;
   $('#score').text(score);
 
-  var keyArray = Object.keys(vocab);
-  var content = "";
+  var keyArray = [];
+  var valArray = [];
+  function resetArrays() {
+    keyArray = Object.keys(vocab);
+    valArray = [];
+    for (var v in vocab) {
+      valArray.push(vocab[v]);
+    };
+    var content = "";
+  }
+  resetArrays();
 
   $('#answer').prop("disabled",true);
 
@@ -61,7 +81,7 @@ $(document).ready(function() {
     score = 0;
     $('#score').text(score);
     vocabList();
-    keyArray = Object.keys(vocab);
+    resetArrays();
 
     if (open) {
       OpenWindow.close();
@@ -119,13 +139,19 @@ $(document).ready(function() {
         for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
         return o;
       };
-      keyArray = shuffle(keyArray);
-      content = keyArray[1];
-      function newWord(val) {
+
+      content = "";
+      function newWord() {
         var word = document.createElement('p');
 
-        keyArray = shuffle(keyArray); // shuffle it!
-        content = keyArray[1];
+        if ($('#targetLang').text() == "English") {
+          keyArray = shuffle(keyArray); // shuffle it!
+          content = keyArray[1];
+        }
+        else {
+          kvalArray = shuffle(valArray); // shuffle it!
+          content = valArray[1];
+        }
 
         word.innerHTML = content;
         return word;
@@ -137,25 +163,45 @@ $(document).ready(function() {
       var firstTry = true;
       $('input').keydown(function() {
         if(event.keyCode == 13) {
-          console.log(wordRemaining)
           var answer = $('#answer').val();
           $('#answer').val("");
-          if (answer == vocab[content]) {
-            $('#currWord').remove();
-            if (firstTry) {
-              score += 5;
+          if ($('#targetLang').text() == "English") {
+            if (answer == vocab[content]) {
+              $('#currWord').remove();
+              if (firstTry) {
+                score += 5;
+              }
+              else {
+                score += 2;
+              }
+              $('#score').text(score);
+              currWord = newWord();
+              drop(currWord);
+              firstTry = true;
             }
             else {
-              score += 2;
+              firstTry = false;
             }
-            $('#score').text(score);
-            currWord = newWord();
-            drop(currWord);
-            firstTry = true;
           }
           else {
-            firstTry = false;
+            if (content == vocab[answer]) {
+              $('#currWord').remove();
+              if (firstTry) {
+                score += 5;
+              }
+              else {
+                score += 2;
+              }
+              $('#score').text(score);
+              currWord = newWord();
+              drop(currWord);
+              firstTry = true;
+            }
+            else {
+              firstTry = false;
+            }
           }
+
         };
       });
 
@@ -175,7 +221,7 @@ $(document).ready(function() {
     open = true;
     vocabList();
     readList();
-    OpenWindow=window.open("", "newwin", "height=700, width=500,toolbar=no,scrollbars="+scroll+",menubar=no");
+    OpenWindow=window.open("", "newwin", "height=700, width=500,toolbar=no,location=no, scrollbars="+scroll+",menubar=no");
     OpenWindow.document.write("<TITLE>")
     OpenWindow.document.write($('#module').val())
     OpenWindow.document.write("</TITLE>")
@@ -199,7 +245,7 @@ $(document).ready(function() {
   // INSTRUCTIONS WINDOW
   $('#instructions').click(function() {
     open = true;
-    OpenWindow=window.open("", "newwin", "height=500, width=500,toolbar=no,scrollbars="+scroll+",menubar=no");
+    OpenWindow=window.open("", "newwin", "height=500, width=500,toolbar=no,location=0, scrollbars="+scroll+",menubar=no");
     OpenWindow.document.write("<TITLE>")
     OpenWindow.document.write("Instructions")
     OpenWindow.document.write("</TITLE>")
@@ -207,7 +253,7 @@ $(document).ready(function() {
     OpenWindow.document.write("<BODY>")
     OpenWindow.document.write("<h2 style='text-decoration:underline; margin-left:10px;'>Instructions</h2>")
     OpenWindow.document.write("<p style='margin-left:10px;'>")
-    OpenWindow.document.write("- Select difficult using the 'Easy', 'Medium' and 'Hard' buttons. <br>- Use the dropdown menus above the challenge box to select your language and vocab list. Click on 'View vocab list' to see the accepted translation for each word. <br>- Once all settings have been selected, click the 'Start' button to initiate the game. You will have 60 seconds to translate as many words as possible, with a timer on each individual word depending on your difficulty setting. You must hit the enter key to submit your answer. <br>- You will be awarded: <br> <ul><li>5 points for a correct answer on the first attempt.</li> <li>2 points if more than one attempt required.</li></ul>")
+    OpenWindow.document.write("- Select difficulty using the 'Easy', 'Medium' and 'Hard' buttons. <br>- Use the dropdown menus above the challenge box to select your language and vocab list. Click on 'View vocab list' to see the accepted translation for each word. <br>- Click on the switch icon to change which language you're translating into. <br>- Once all settings have been selected, click the 'Start' button to initiate the game. You will have 60 seconds to translate as many words as possible, with a timer on each individual word depending on your difficulty setting. You must hit the enter key to submit your answer. <br>- You will be awarded: <br> <ul><li>5 points for a correct answer on the first attempt.</li> <li>2 points if more than one attempt required.</li></ul>")
     OpenWindow.document.write("</p>")
     OpenWindow.document.write("</BODY>")
     OpenWindow.document.write("</HTML>")
@@ -223,6 +269,7 @@ $(document).ready(function() {
   // GENERATE VOCAB LISTS
   $('#module').change(vocabList());
   $('#lang').change(function() {
+    $('#targetLang').text("English");
     if ($('#lang').val() == "German") {
       $('#module option').remove();
       var verbs1 = document.createElement('option');
@@ -262,40 +309,39 @@ $(document).ready(function() {
     if ($('#lang').val() == "German") {
       if ($('#module').val() == "Verbs I") {
         vocab = {
-        "to accept": "annehmen",
-        "to accompany": "begleiten",
-        "to advise": "beraten",
-        "to advise": "raten",
-        "to allow": "erlauben",
-        "to answer": "beantworten",
-        "to apply for": "sich bewerben um",
-        "to have a fight": "sich streiten",
-        "to argue": "streiten",
-        "to arrive": "ankommen",
-        "to ask": "fragen",
-        "to ask a question": "eine Frage stellen",
-        "to ask for": "bitten um",
-        "to avoid, to prevent, to warn": "vermeiden",
-        "to be able to": "k\xF6nnen",
-        "to be allowed to": "d\xFCrfen",
-        "to be called": "hei\xDFen",
-        "to be interested in": "sich interessieren f\xFCr",
-        "to be located": "sich befinden",
-        "to be silent": "schweigen",
-        "to be supposed to": "sollen",
-        "to become": "werden",
-        "to start": "anfangen",
-        "to begin": "beginnen",
-        "to belong": "geh\xF6ren",
-        "to borrow": "leihen",
-        "to bring": "bringen",
-        "to buy": "kaufen",
-        "to call": "nennen",
-        "to change": "wechseln",
-        "to chat": "plaudern",
-        "to check": "nachsehen",
-        "to choose, to dial": "w\xE4hlen",
-        "to click": "klicken",
+        "annehmen": "to accept",
+        "begleiten": "to accompany",
+        "beraten": "to advise",
+        "erlauben": "to allow",
+        "beantworten": "to answer",
+        "sich bewerben um": "to apply for",
+        "sich streiten": "to have a fight",
+        "streiten": "to argue",
+        "ankommen": "to arrive",
+        "fragen": "to ask",
+        "eine Frage stellen": "to ask a question",
+        "bitten um": "to ask for",
+        "vermeiden": "to avoid",
+        "k\xF6nnen": "to be able to",
+        "d\xFCrfen": "to be allowed to",
+        "hei\xDFen": "to be called",
+        "sich interessieren f\xFCr": "to be interested in",
+        "sich befinden": "to be located",
+        "schweigen": "to be silent",
+        "sollen": "to be supposed to",
+        "werden": "to become",
+        "anfangen": "to start",
+        "beginnen": "to begin",
+        "geh\xF6ren": "to belong",
+        "leihen": "to borrow",
+        "bringen": "to bring",
+        "kaufen": "to buy",
+        "nennen": "to call",
+        "wechseln": "to change",
+        "plaudern": "to chat",
+        "nachsehen": "to check",
+        "w\xE4hlen": "to choose",
+        "klicken": "to click",
         };
       }
       else if ($('#module').val() == "Verbs II") {
@@ -394,68 +440,68 @@ $(document).ready(function() {
     if ($('#lang').val() == "Japanese") {
       if ($('#module').val() == "Kanji I") {
         vocab = {
-          "&#19968;": "one",
-          "&#20108;": "two",
-          "&#19977;": "three",
-          "&#22235;": "four",
-          "&#20116;": "five",
-          "&#20845;": "six",
-          "&#19971;": "seven",
-          "&#20843;": "eight",
-          "&#20061;": "nine",
-          "&#21313;": "ten",
-          "&#20870;": "circle",
-          "&#30334;": "hundred",
-          "&#21315;": "thousand",
-          "&#19975;": "ten thousand",
-          "&#20309;": "what",
-          "&#26085;": "day",
-          "&#26376;": "month",
-          "&#26126;&#12427;&#12356;": "bright",
-          "&#23546;": "temple",
-          "&#26178;": "time",
-          "&#28779;": "fire",
-          "&#27700;": "water",
-          "&#26408;": "tree",
-          "&#37329;": "money",
-          "&#22303;": "earth",
-          "&#20170;": "now",
-          "&#20998;&#12427;": "understand",
-          "&#36913;": "week",
-          "&#24180;": "year",
-          "&#26332;": "weekday",
-          "&#22823;&#12365;&#12356;": "big",
-          "&#20013;": "middle",
-          "&#23567;&#12373;&#12356;": "small",
-          "&#23569;&#12394;&#12356;": "few",
+          "\u4E00": "one",
+          "\u4E8C": "two",
+          "\u4E09": "three",
+          "\u56DB": "four",
+          "\u4E94": "five",
+          "\u516D": "six",
+          "\u4E03": "seven",
+          "\u516B": "eight",
+          "\u4E5D": "nine",
+          "\u5341": "ten",
+          "\u5186": "circle",
+          "\u767E": "hundred",
+          "\u5343": "thousand",
+          "\u4E07": "ten thousand",
+          "\u4F55": "what",
+          "\u65E5": "day",
+          "\u6708": "month",
+          "\u660E\u308B\u3044": "bright",
+          "\u5BFA": "temple",
+          "\u6642": "time",
+          "\u706B": "fire",
+          "\u6C34": "water",
+          "\u6728": "tree",
+          "\u91D1": "money",
+          "\u571F": "earth",
+          "\u4ECA": "now",
+          "\u5206\u308B": "understand",
+          "\u9031": "week",
+          "\u5E74": "year",
+          "\u66DC": "weekday",
+          "\u5927\u304D\u3044": "big",
+          "\u4E2D": "middle",
+          "\u5C0F\u3055\u3044": "small",
+          "\u5C11\u306A\u3044": "few",
         };
       }
       if ($('#module').val() == "Conjunctions") {
         vocab = {
-          "&#12391;&#12418;": "but",
-          "&#12369;&#12393;": "but",
-          "&#12381;&#12428;&#12395;": "then",
-          "&#12381;&#12428;&#12424;&#12426;": "more than that",
-          "&#12375;&#12363;&#12375;": "however",
-          "&#12375;&#12363;&#12418;": "what's more",
-          "&#12364;": "yet",
-          "&#12392;": "if",
-          "&#12381;&#12398;&#19978;": "moreover",
-          "&#12381;&#12375;&#12390;": "and",
-          "&#12387;&#12390;&#12371;&#12392;&#12399;": "which means",
-          "&#12384;&#12363;&#12425;": "so",
-          "&#12363;&#12425;": "because",
-          "&#12391;&#12377;&#12363;&#12425;": "therefore",
-          "&#12384;&#12364;": "and yet",
-          "&#12394;&#12398;&#12395;": "despite",
-          "&#12381;&#12428;&#12391;&#12418;": "even though",
-          "&#12398;&#12391;": "as",
-          "&#12414;&#12383;": "again",
-          "&#12414;&#12384;": "still",
-          "&#12381;&#12398;&#24460;": "thereafter",
-          "&#12381;&#12428;&#12363;&#12425;": "and then",
-          "&#12373;&#12425;&#12395;": "furthermore",
-          "&#12392;&#12371;&#12429;&#12391;": "by the way",
+          "\u3067\u3082": "but",
+          "\u3051\u3069": "but",
+          "\u305D\u308C\u306B": "then",
+          "\u305D\u308C\u3088\u308A": "more than that",
+          "\u3057\u304B\u3057": "however",
+          "\u3057\u304B\u3082": "what's more",
+          "\u304C": "yet",
+          "\u3068": "if",
+          "\u305D\u306E\u4E0A": "moreover",
+          "\u305D\u3057\u3066": "and",
+          "\u3063\u3066\u3053\u3068\u306F": "which means",
+          "\u3060\u304B\u3089": "so",
+          "\u304B\u3089": "because",
+          "\u3067\u3059\u304B\u3089": "therefore",
+          "\u3060\u304C": "and yet",
+          "\u306A\u306E\u306B": "despite",
+          "\u305D\u308C\u3067\u3082": "even though",
+          "\u306E\u3067": "as",
+          "\u307E\u305F": "again",
+          "\u307E\u3060": "still",
+          "\u305D\u306E\u5F8C": "thereafter",
+          "\u305D\u308C\u304B\u3089": "and then",
+          "\u3055\u3089\u306B": "furthermore",
+          "\u3068\u3053\u308D\u3067": "by the way",
         };
       }
     }
