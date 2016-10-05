@@ -1,3 +1,4 @@
+
 $(document).ready(function() {
   var vocab = "";
 
@@ -182,6 +183,11 @@ $(document).ready(function() {
       $('#module').append(kanji1);
       $('#kanji1').attr("value","Kanji I");
       $('#kanji1').html("Kanji I");
+      var conjunctions = document.createElement('option');
+      conjunctions.id = "conjunctions"
+      $('#module').append(conjunctions);
+      $('#conjunctions').attr("value","Conjunctions");
+      $('#conjunctions').html("Conjunctions");
     }
   })
 
@@ -336,11 +342,11 @@ $(document).ready(function() {
           "&#20870;": "circle",
           "&#30334;": "hundred",
           "&#21315;": "thousand",
-          "&#19975;": "man",
+          "&#19975;": "ten thousand",
           "&#20309;": "what",
           "&#26085;": "day",
           "&#26376;": "month",
-          "&#26126;": "bright",
+          "&#26126;&#12427;&#12356;": "bright",
           "&#23546;": "temple",
           "&#26178;": "time",
           "&#28779;": "fire",
@@ -349,14 +355,42 @@ $(document).ready(function() {
           "&#37329;": "money",
           "&#22303;": "earth",
           "&#20170;": "now",
-          "&#20998;": "understand",
+          "&#20998;&#12427;": "understand",
           "&#36913;": "week",
           "&#24180;": "year",
           "&#26332;": "weekday",
-          "&#22823;": "big",
+          "&#22823;&#12365;&#12356;": "big",
           "&#20013;": "middle",
-          "&#23567;": "small",
-          "&#23569;": "few",
+          "&#23567;&#12373;&#12356;": "small",
+          "&#23569;&#12394;&#12356;": "few",
+        };
+      }
+      if ($('#module').val() == "Conjunctions") {
+        vocab = {
+          "&#12391;&#12418;": "but",
+          "&#12369;&#12393;": "but",
+          "&#12381;&#12428;&#12395;": "then",
+          "&#12381;&#12428;&#12424;&#12426;": "more than that",
+          "&#12375;&#12363;&#12375;": "however",
+          "&#12375;&#12363;&#12418;": "what's more",
+          "&#12364;": "yet",
+          "&#12392;": "if",
+          "&#12381;&#12398;&#19978;": "moreover",
+          "&#12381;&#12375;&#12390;": "and",
+          "&#12387;&#12390;&#12371;&#12392;&#12399;": "which means",
+          "&#12384;&#12363;&#12425;": "so",
+          "&#12363;&#12425;": "because",
+          "&#12391;&#12377;&#12363;&#12425;": "therefore",
+          "&#12384;&#12364;": "and yet",
+          "&#12394;&#12398;&#12395;": "despite",
+          "&#12381;&#12428;&#12391;&#12418;": "even though",
+          "&#12398;&#12391;": "as",
+          "&#12414;&#12383;": "again",
+          "&#12414;&#12384;": "still",
+          "&#12381;&#12398;&#24460;": "thereafter",
+          "&#12381;&#12428;&#12363;&#12425;": "and then",
+          "&#12373;&#12425;&#12395;": "furthermore",
+          "&#12392;&#12371;&#12429;&#12391;": "by the way",
         };
       }
     }
