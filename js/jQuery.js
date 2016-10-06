@@ -3,6 +3,8 @@ $(document).ready(function() {
   vocabList();
 
   var open = false;
+  var finishedArray = false;
+  var firstTry = true;
 
   // WORD
   function drop(word) {
@@ -12,11 +14,12 @@ $(document).ready(function() {
       top:"+=400"
     },10000);
     wordRemaining = setTime;
+    finishedArray = false;
+    firstTry = true;
   };
 
   // TRANSLATION DIRECTION
   $('.glyphicon-refresh').click(function() {
-    console.log(valArray)
     if ($('#targetLang').text() == "English") {
       $('#targetLang').text($('#lang').val());
     }
@@ -147,10 +150,18 @@ $(document).ready(function() {
         if ($('#targetLang').text() == "English") {
           keyArray = shuffle(keyArray); // shuffle it!
           content = keyArray[1];
+          if (typeof content == "object") {
+            content = shuffle(content);
+            content = content[1]
+          }
         }
         else {
           kvalArray = shuffle(valArray); // shuffle it!
           content = valArray[1];
+          if (typeof content == "object") {
+            content = shuffle(content);
+            content = content[1]
+          }
         }
 
         word.innerHTML = content;
@@ -160,45 +171,96 @@ $(document).ready(function() {
 
       // CREATE WORD
       drop(currWord);
-      var firstTry = true;
       $('input').keydown(function() {
         if(event.keyCode == 13) {
           var answer = $('#answer').val();
           $('#answer').val("");
           if ($('#targetLang').text() == "English") {
-            if (answer == vocab[content]) {
-              $('#currWord').remove();
-              if (firstTry) {
-                score += 5;
+            if (typeof vocab[content] == "object") {
+              for (var i = 0; i < vocab[content].length; i++) {
+                if (answer != vocab[content][i] && i == vocab[content].length - 1) {
+                  finishedArray = true;
+                };
+                if (answer == vocab[content][i]) {
+                  i = vocab[content].length;
+                  $('#currWord').remove();
+                  if (firstTry) {
+                    score += 5;
+                  }
+                  else {
+                    score += 2;
+                  }
+                  $('#score').text(score);
+                  currWord = newWord();
+                  drop(currWord);
+                  break;
+                }
+                else if (answer != vocab[content][i] && finishedArray == true) {
+                  firstTry = false;
+                }
               }
-              else {
-                score += 2;
-              }
-              $('#score').text(score);
-              currWord = newWord();
-              drop(currWord);
-              firstTry = true;
             }
             else {
-              firstTry = false;
+              if (answer == vocab[content]) {
+                $('#currWord').remove();
+                if (firstTry) {
+                  score += 5;
+                }
+                else {
+                  score += 2;
+                }
+                $('#score').text(score);
+                currWord = newWord();
+                drop(currWord);
+                firstTry = true;
+              }
+              else {
+                firstTry = false;
+              }
             }
           }
           else {
-            if (content == vocab[answer]) {
-              $('#currWord').remove();
-              if (firstTry) {
-                score += 5;
+            if (typeof vocab[answer] == "object") {
+              for (var i = 0; i < vocab[answer].length; i++) {
+                if (content != vocab[answer][i] && i == vocab[answer].length - 1) {
+                  finishedArray = true;
+                };
+                if (content == vocab[answer][i]) {
+                  i = vocab[answer].length;
+                  $('#currWord').remove();
+                  if (firstTry) {
+                    score += 5;
+                  }
+                  else {
+                    score += 2;
+                  }
+                  $('#score').text(score);
+                  currWord = newWord();
+                  drop(currWord);
+                  break;
+                }
+                else if (content != vocab[answer][i] && finishedArray == true) {
+                  firstTry = false;
+                }
               }
-              else {
-                score += 2;
-              }
-              $('#score').text(score);
-              currWord = newWord();
-              drop(currWord);
-              firstTry = true;
             }
             else {
-              firstTry = false;
+              if (content == vocab[answer]) {
+                $('#currWord').remove();
+                if (firstTry) {
+                  score += 5;
+                }
+                else {
+                  score += 2;
+                }
+                $('#score').text(score);
+                currWord = newWord();
+                drop(currWord);
+                firstTry = true;
+              }
+              else {
+                firstTry = false;
+              }
             }
           }
 
@@ -210,11 +272,21 @@ $(document).ready(function() {
   // VOCAB LIST WINDOW
   var keyList = "";
   var valList = "";
+  var tempVal = [];
   function readList() {
     keyList = Object.keys(vocab).join("<br>");
     valList = "";
+    tempVal = [];
     for (var v in vocab) {
-      valList += vocab[v] + "<br>";
+      if (typeof vocab[v] == "string") {
+        valList += vocab[v] + "<br>";
+      }
+      else {
+        for (var i = 0; i < vocab[v].length; i++) {
+          tempVal[i] = " " + vocab[v][i];
+        }
+        valList += tempVal + "<br>";
+      }
     };
   };
   $('#view').click(function() {
@@ -312,6 +384,7 @@ $(document).ready(function() {
         "annehmen": "to accept",
         "begleiten": "to accompany",
         "beraten": "to advise",
+        "raten": "to advise",
         "erlauben": "to allow",
         "beantworten": "to answer",
         "sich bewerben um": "to apply for",
@@ -321,7 +394,7 @@ $(document).ready(function() {
         "fragen": "to ask",
         "eine Frage stellen": "to ask a question",
         "bitten um": "to ask for",
-        "vermeiden": "to avoid",
+        "vermeiden": ["to avoid","to prevent","to warn"],
         "k\xF6nnen": "to be able to",
         "d\xFCrfen": "to be allowed to",
         "hei\xDFen": "to be called",
@@ -340,7 +413,7 @@ $(document).ready(function() {
         "wechseln": "to change",
         "plaudern": "to chat",
         "nachsehen": "to check",
-        "w\xE4hlen": "to choose",
+        "w\xE4hlen": ["to choose","to dial"],
         "klicken": "to click",
         };
       }
@@ -415,7 +488,7 @@ $(document).ready(function() {
         "klopfen": "to knock",
         "schlagen": "to hit",
         "wissen": "to know",
-        "kennen": "to be acquainted with",
+        "kennen": "to know",
         "landen": "to land",
         "dauern": "to last",
         "lachen": "to laugh",
@@ -455,15 +528,15 @@ $(document).ready(function() {
           "\u5343": "thousand",
           "\u4E07": "ten thousand",
           "\u4F55": "what",
-          "\u65E5": "day",
-          "\u6708": "month",
+          "\u65E5": ["day","sun"],
+          "\u6708": ["month","moon"],
           "\u660E\u308B\u3044": "bright",
           "\u5BFA": "temple",
           "\u6642": "time",
           "\u706B": "fire",
           "\u6C34": "water",
           "\u6728": "tree",
-          "\u91D1": "money",
+          "\u91D1": ["money","gold"],
           "\u571F": "earth",
           "\u4ECA": "now",
           "\u5206\u308B": "understand",
@@ -471,7 +544,7 @@ $(document).ready(function() {
           "\u5E74": "year",
           "\u66DC": "weekday",
           "\u5927\u304D\u3044": "big",
-          "\u4E2D": "middle",
+          "\u4E2D": ["middle","inside","through"],
           "\u5C0F\u3055\u3044": "small",
           "\u5C11\u306A\u3044": "few",
         };
