@@ -6,6 +6,22 @@ $(document).ready(function() {
   var finishedArray = false;
   var firstTry = true;
 
+  // LOAD OPTIONS
+  function loadGerman() {
+    $('#module option').remove();
+    newOption("verbs1","Verbs I");
+    newOption("verbs2","Verbs II");
+    newOption("verbs3","Verbs III");
+    newOption("adj1","Adjectives I");
+  };
+  function loadJapanese() {
+    $('#module option').remove();
+    newOption("kanji1","Kanji I")
+    newOption("conjunctions","Conjunctions")
+  };
+
+  loadGerman();
+
   // WORD
   function drop(word) {
     word.id = "currWord";
@@ -28,7 +44,7 @@ $(document).ready(function() {
     }
   })
 
-  // DIFFICULT TIMER
+  // DIFFICULTY TIMER
   var difficulty = 10000;
   var counting = false;
   var remaining = 60;
@@ -60,6 +76,7 @@ $(document).ready(function() {
   var score = 0;
   $('#score').text(score);
 
+  // VOCAB LIST ARRAYS
   var keyArray = [];
   var valArray = [];
   function resetArrays() {
@@ -175,7 +192,11 @@ $(document).ready(function() {
         if(event.keyCode == 13) {
           var answer = $('#answer').val();
           $('#answer').val("");
+
+          // WHEN ENGLISH
           if ($('#targetLang').text() == "English") {
+
+            // WHEN ARRAY
             if (typeof vocab[content] == "object") {
               for (var i = 0; i < vocab[content].length; i++) {
                 if (answer != vocab[content][i] && i == vocab[content].length - 1) {
@@ -200,6 +221,8 @@ $(document).ready(function() {
                 }
               }
             }
+
+            // WHEN STRING
             else {
               if (answer == vocab[content]) {
                 $('#currWord').remove();
@@ -219,7 +242,11 @@ $(document).ready(function() {
               }
             }
           }
+
+          // WHEN FOREIGN LANGUAGE
           else {
+
+            // WHEN ARRAY
             if (typeof vocab[answer] == "object") {
               for (var i = 0; i < vocab[answer].length; i++) {
                 if (content != vocab[answer][i] && i == vocab[answer].length - 1) {
@@ -244,6 +271,8 @@ $(document).ready(function() {
                 }
               }
             }
+
+            // WHEN STRING
             else {
               if (content == vocab[answer]) {
                 $('#currWord').remove();
@@ -339,47 +368,32 @@ $(document).ready(function() {
   });
 
   // GENERATE VOCAB LISTS
+  function newOption(id,val) {
+    var option = document.createElement('option');
+    option.id = id;
+    $('#module').append(option);
+    $('#' + id).attr("value",val);
+    $('#' + id).html(val);
+  };
+
   $('#module').change(vocabList());
   $('#lang').change(function() {
     $('#targetLang').text("English");
     if ($('#lang').val() == "German") {
-      $('#module option').remove();
-      var verbs1 = document.createElement('option');
-      verbs1.id = "verbs1"
-      $('#module').append(verbs1);
-      $('#verbs1').attr("value","Verbs I");
-      $('#verbs1').html("Verbs I");
-      var verbs2 = document.createElement('option');
-      verbs2.id = "verbs2"
-      $('#module').append(verbs2);
-      $('#verbs2').attr("value","Verbs II");
-      $('#verbs2').html("Verbs II");
-      var verbs3 = document.createElement('option');
-      verbs3.id = "verbs3"
-      $('#module').append(verbs3);
-      $('#verbs3').attr("value","Verbs III");
-      $('#verbs3').html("Verbs III");
+      loadGerman();
     }
     else if ($('#lang').val() == "Japanese") {
-      $('#module option').remove();
-      var kanji1 = document.createElement('option');
-      kanji1.id = "kanji1"
-      $('#module').append(kanji1);
-      $('#kanji1').attr("value","Kanji I");
-      $('#kanji1').html("Kanji I");
-      var conjunctions = document.createElement('option');
-      conjunctions.id = "conjunctions"
-      $('#module').append(conjunctions);
-      $('#conjunctions').attr("value","Conjunctions");
-      $('#conjunctions').html("Conjunctions");
+      loadJapanese();
     }
   })
 
   function vocabList() {
     vocab = "";
     // VOCAB LIST SELECTION
-    if ($('#lang').val() == "German") {
-      if ($('#module').val() == "Verbs I") {
+    switch ($('#lang').val()) {
+    case "German" :
+      switch ($('#module').val()) {
+      case "Verbs I":
         vocab = {
         "annehmen": "to accept",
         "begleiten": "to accompany",
@@ -416,8 +430,8 @@ $(document).ready(function() {
         "w\xE4hlen": ["to choose","to dial"],
         "klicken": "to click",
         };
-      }
-      else if ($('#module').val() == "Verbs II") {
+      break;
+      case "Verbs II":
         vocab = {
         "klettern": "to climb",
         "steigen": "to get on",
@@ -462,8 +476,8 @@ $(document).ready(function() {
         "sich langweilen": "to get bored",
         "geben": "to give",
         };
-      }
-      else if ($('#module').val() == "Verbs III") {
+      break;
+      case "Verbs III":
         vocab = {
         "schenken": "to give (presents)",
         "einen Spaziergang machen": "to go for a walk",
@@ -508,10 +522,48 @@ $(document).ready(function() {
         "laden": "to load",
         "schauen": "to look",
         };
-      };
-    }
-    if ($('#lang').val() == "Japanese") {
-      if ($('#module').val() == "Kanji I") {
+      break;
+      case "Adjectives I":
+        vocab = {
+          "all": "all",
+          "alone": "allein",
+          "b\u00F6se": "angry",
+          "zornig": "angry",
+          "\u00E4rgerlich": "annoying",
+          "erstaunt": "astonished",
+          "schrecklich": ["awful", "terrible"],
+          "schlecht": "bad",
+          "sch\u00F6n": "beautiful",
+          "gro\u00DF": ["big", "tall"],
+          "langweilig": "boring",
+          "breit": "broad",
+          "gebrochen": "broken",
+          "kaputt": "broken",
+          "besch\u00E4ftigt": "busy",
+          "goldig": "charming",
+          "sauber": "clean",
+          "klar": "clear",
+          "geschlossen": "closed",
+          "bequem": "comfortable",
+          "aktuell": "current",
+          "gef\u00E4hrlich": "dangerous",
+          "bestimmt": "definite",
+          "dicht": "dense",
+          "schwierig": "difficult",
+          "dreckig": "dirty",
+          "schmutzig": "dirty",
+          "ekelhaft": "disgusting",
+          "dynamisch": "dynamic",
+          "leicht": "easy",
+          "leer": "empty",
+          "umweltfeindlich": "environmentally damaging",
+        };
+      break;
+      }
+    break;
+    case "Japanese":
+      switch ($('#module').val()) {
+      case "Kanji I":
         vocab = {
           "\u4E00": "one",
           "\u4E8C": "two",
@@ -548,8 +600,8 @@ $(document).ready(function() {
           "\u5C0F\u3055\u3044": "small",
           "\u5C11\u306A\u3044": "few",
         };
-      }
-      if ($('#module').val() == "Conjunctions") {
+      break;
+      case "Conjunctions":
         vocab = {
           "\u3067\u3082": "but",
           "\u3051\u3069": "but",
@@ -576,8 +628,11 @@ $(document).ready(function() {
           "\u3055\u3089\u306B": "furthermore",
           "\u3068\u3053\u308D\u3067": "by the way",
         };
+      break;
       }
+    break;
     }
+
     readList();
   }
 });
