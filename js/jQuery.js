@@ -16,8 +16,12 @@ $(document).ready(function() {
   };
   function loadJapanese() {
     $('#module option').remove();
-    newOption("kanji1","Kanji I")
-    newOption("conjunctions","Conjunctions")
+    newOption("kanji1","Kanji I");
+    newOption("conjunctions","Conjunctions");
+  };
+  function loadSpanish() {
+    $('#module option').remove();
+    newOption("verbs1","Verbs I");
   };
 
   loadGerman();
@@ -311,6 +315,7 @@ $(document).ready(function() {
         valList += vocab[v] + "<br>";
       }
       else {
+        tempVal = [];
         for (var i = 0; i < vocab[v].length; i++) {
           tempVal[i] = " " + vocab[v][i];
         }
@@ -381,6 +386,9 @@ $(document).ready(function() {
     $('#targetLang').text("English");
     if ($('#lang').val() == "German") {
       loadGerman();
+    }
+    else if ($('#lang').val() == "Spanish") {
+      loadSpanish();
     }
     else if ($('#lang').val() == "Japanese") {
       loadJapanese();
@@ -559,6 +567,52 @@ $(document).ready(function() {
           "umweltfeindlich": "environmentally damaging",
         };
       break;
+      }
+    break;
+    case "Spanish":
+      switch ($('#module').val()) {
+      case "Verbs I" :
+        vocab = {
+          "aceptar" : "to accept",
+          "acompa\u00F1ar" : "to accompany",
+          "a\u00F1adir" : "to add",
+          "aconsejar" : "to advise",
+          "permitir" : "to allow",
+          "contestar" : ["to answer","to reply"],
+          "dirigirse a" : "to apply to",
+          "solicitar" : "to apply to",
+          "discutir" : "to argue",
+          "llegar" : "to arrive",
+          "preguntar" : "to ask",
+          "hacer una pregunta" : "to ask a question",
+          "pedir" : "to ask for",
+          "evitar" : "to avoid",
+          "ba\u00F1arse" : "to bathe",
+          "estar" : "to be",
+          "ser" : "to be",
+          "poder" : "to be able to",
+          "nacer" : "to be born",
+          "llamarse" : "to be called",
+          "tener cuidado" : "to be careful",
+          "tener calor" : "to be hot",
+          "tener fr\u00EDo" : "to be cold",
+          "tener hambre" : "to be hungry",
+          "tener prisa" : "to be in a hurry",
+          "interesarse en" : "to be interested in",
+          "tener ganas de" : "to be keen to",
+          "encontrarse" : "to be located",
+          "estar situado" : "to be located",
+          "tener suerte" : "to be lucky",
+          "tener sue\u00F1o" : "to be tired",
+          "sentir" : "to be sorry",
+          "tener \u00E9xito" : "to be successful",
+          "tener sed" : "to be thirsty",
+          "pedir prestado" : "to borrow",
+          "romper" : "to break",
+          "traer" : "to bring",
+          "cepillarse" : "to brush",
+        };
+        break;
       }
     break;
     case "Japanese":
