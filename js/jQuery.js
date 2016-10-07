@@ -13,15 +13,21 @@ $(document).ready(function() {
     newOption("verbs2","Verbs II");
     newOption("verbs3","Verbs III");
     newOption("adj1","Adjectives I");
-  };
-  function loadJapanese() {
-    $('#module option').remove();
-    newOption("kanji1","Kanji I");
-    newOption("conjunctions","Conjunctions");
+    newOption("adj2","Adjectives II");
+    newOption("adj3","Adjectives III");
+    newOption("adj4","Adjectives IV");
+    newOption("colours","Colours");
   };
   function loadSpanish() {
     $('#module option').remove();
     newOption("verbs1","Verbs I");
+    newOption("colours","Colours");
+  };
+  function loadJapanese() {
+    $('#module option').remove();
+    newOption("kanji1","Kanji I");
+    newOption("kanji2","Kanji II");
+    newOption("conjunctions","Conjunctions");
   };
 
   loadGerman();
@@ -395,6 +401,7 @@ $(document).ready(function() {
     }
   })
 
+
   function vocabList() {
     vocab = "";
     // VOCAB LIST SELECTION
@@ -565,7 +572,151 @@ $(document).ready(function() {
           "leicht": "easy",
           "leer": "empty",
           "umweltfeindlich": "environmentally damaging",
+          "umweltfreundlich": "environmentally friendly",
+          "genau": "exact",
         };
+      break;
+      case "Adjectives II":
+        vocab = {
+          "ausgezeichnet": "excellent",
+          "aufregend": "exciting",
+          "spannend": ["exciting", "tense"],
+          "ersch\u00F6pft": "exhausted",
+          "teuer": "expensive",
+          "falsch": "false",
+          "weit": "far",
+          "schnell": ["fast", "quick"],
+          "dick": ["fat", "thick"],
+          "Lieblings-": "favourite",
+          "erst": "first",
+          "flexibel": "flexible",
+          "frei": "free",
+          "kostenlos": "free",
+          "satt": ["full", "satisfied"],
+          "voll": "full",
+          "komisch": ["funny", "unusual"],
+          "lustig": "funny",
+          "allgemein": "general",
+          "gut": "good",
+          "dankbar": ["grateful", "thankful"],
+          "fantastisch": "great",
+          "toll": "great",
+          "prima": ["great", "marvellous"],
+          "gl\u00FCcklich": "happy",
+          "schwer": ["hard", "heavy", "difficult"],
+          "flei\u00DFig": "hardworking",
+          "gesund": "healthy",
+          "hoch": "high",
+          "hei\u00DF": "hot",
+          "krank": "ill",
+          "wichtig": "important",
+          "gut gelaunt": "in a good mood",
+          "eilig": ["hurried", "hasty"],
+        };
+      break;
+      case "Adjectives III":
+        vocab = {
+          "drinnen" : "inside",
+          "nett" : "kind",
+          "letzt" : "last",
+          "faul" : "lazy",
+          "lang" : "long",
+          "niedrig" : "low",
+          "gro\u00DFartig" : "magnificent",
+          "wunderbar" : "marvellous",
+          "reif" : ["mature", "ripe"],
+          "launisch" : "moody",
+          "eng" : "narrow",
+          "schmal" : "narrow",
+          "nah" : "near",
+          "n\u00F6tig" : "necessary",
+          "notwendig" : "necessary",
+          "neu" : "new",
+          "n\u00E4chst" : "next",
+          "laut" : ["noisy", "loud"],
+          "zahlreich" : "numerous",
+          "alt" : "old",
+          "ehemalig" : ["old", "former"],
+          "einzig" : "only",
+          "ge\u00F6ffnet" : "open",
+          "offen" : "open",
+          "ander" : "other",
+          "drau\u00DFen" : "outside",
+          "eigen" : "own",
+          "ruhig" : ["peaceful", "calm"],
+          "perfekt" : "perfect",
+          "zufrieden" : ["pleased", "satisfied"],
+          "h\u00FCbsch" : "pretty",
+          "stolz" : "proud",
+          "leise" : ["quiet", "gentle"],
+          "bereit" : "ready",
+          "fertig" : ["ready","finished"],
+          "echt" : "real",
+          "wirklich" : "real",
+          "verantwortlich" : "responsible",
+          "reich" : "rich",
+        };
+      break;
+      case "Adjectives IV":
+        vocab = {
+          "rund" : "round",
+          "traurig" : "sad",
+          "klasse" : ["sensational", "awesome"],
+          "ernst" : "serious",
+          "hart" : ["severe", "unkind"],
+          "kurz" : "short",
+          "sch\u00FCchtern" : "shy",
+          "lautlos" : "silent",
+          "gleich" : ["similar", "same"],
+          "klein" : "small",
+          "weich" : "soft",
+          "steil" : "steep",
+          "streng" : "strict",
+          "stark" : "strong",
+          "dumm" : "stupid",
+          "\u00FCberrascht" : "surprised",
+          "d\u00FCnn" : "thin",
+          "m\u00FCde" : "tired",
+          "erm\u00FCdend" : "tiring",
+          "zusammen" : "together",
+          "wahr" : "true",
+          "richtig" : ["true", "right"],
+          "typisch" : "typical",
+          "h\u00E4\u00DFlich" : ["ugly", "horrible"],
+          "unglaublich" : "unbelievable",
+          "unvorstellbar" : "unimaginable",
+          "n\u00FCtzlich" : "useful",
+          "g\u00FCltig" : "valid",
+          "wertvoll" : "valuable",
+          "unterschiedlich" : "variable",
+          "schwach" : "weak",
+          "artig" : "well behaved",
+          "jung" : "young",
+          "j\u00FCnger" : "younger",
+        };
+      break;
+      case "Colours":
+        vocab = {
+          "schwarz" : "black",
+          "blau" : "blue",
+          "braun" : "brown",
+          "die Farbe" : "colour",
+          "dunkel" : "dark",
+          "gr\u00FCn" : "green",
+          "grau" : "grey",
+          "hell" : "light",
+          "bleich" : "pale",
+          "rosa" : "pink",
+          "rot" : "red",
+          "lila" : "violet",
+          "wei\u00DF" : "white",
+          "gelb" : "yellow",
+          "t\u00FCrkis" : "turquoise",
+          "scharlachrot" : "scarlet",
+          "orange" : "orange",
+          "cremewei\u00DF" : "cream",
+          "Neon-" : "neon",
+        }
       break;
       }
     break;
@@ -613,6 +764,32 @@ $(document).ready(function() {
           "cepillarse" : "to brush",
         };
         break;
+        case "Colours":
+          vocab = {
+            "negro" : "black",
+            "azul" : "blue",
+            "marr\u00F3n" : "brown",
+            "moreno" : ["dark brown", "dark"],
+            "casta\u00F1o" : ["light brown", "chestnut"],
+            "el color" : "colour",
+            "oscuro" : "dark",
+            "verde" : "green",
+            "gris" : "grey",
+            "claro" : "light",
+            "rubio" : "fair",
+            "p\u00E1lido" : "pale",
+            "rosa" : "pink",
+            "rojo" : "red",
+            "violeta" : "violet",
+            "blanco" : "white",
+            "amarillo" : "yellow",
+            "turquesa" : "turquoise",
+            "escarlata" : "scarlet",
+            "naranja" : "orange",
+            "crema" : "cream",
+            "ne\u00F3n" : "neon",
+          }
+        break;
       }
     break;
     case "Japanese":
@@ -654,6 +831,45 @@ $(document).ready(function() {
           "\u5C0F\u3055\u3044": "small",
           "\u5C11\u306A\u3044": "few",
         };
+      break;
+      case "Kanji II":
+        vocab = {
+          "\u591A\u3044": "many",
+          "\u4E0A\u3052\u308B": ["give","raise"],
+          "\u4E0B\u304C\u308B": ["fall","step back"],
+          "\u53F3": "right",
+          "\u5DE6": "left",
+          "\u77F3": "stone",
+          "\u5730": "earth",
+          "\u4EBA": "person",
+          "\u5165\u308B": "enter",
+          "\u51FA\u308B": "leave",
+          "\u53E3": "mouth",
+          "\u5916": "outside",
+          "\u76EE": "eye",
+          "\u624B": "hand",
+          "\u8DB3": ["leg","foot"],
+          "\u6B62\u3081\u308B": "stop",
+          "\u6B69\u304F": "walk",
+          "\u51FA\u3059": ["give out","send"],
+          "\u5165\u308C\u308B": "go in",
+          "\u4EBA\u53E3": "population",
+          "\u5916\u4EBA": "foreigner",
+          "\u76EE\u4E0A": "superior",
+          "\u4E0A\u624B": "skillful",
+          "\u884C\u304F": "go",
+          "\u6765\u308B": "come",
+          "\u5E74\u4E0A": "older",
+          "\u5E74\u4E0B": "younger",
+          "\u5730\u4E0B": "underground",
+          "\u4ECA\u65E5": "today",
+          "\u660E\u65E5": "tomorrow",
+          "\u4ECA\u5E74": "this year",
+          "\u4ECA\u6708": "this month",
+          "\u6765\u6708": "next month",
+          "\u6765\u5E74": "next year",
+          "\u6765\u9031": "next week",
+        }
       break;
       case "Conjunctions":
         vocab = {
