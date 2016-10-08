@@ -17,10 +17,25 @@ $(document).ready(function() {
     newOption("adj3","Adjectives III");
     newOption("adj4","Adjectives IV");
     newOption("colours","Colours");
+    newOption("adverbs","Adverbs");
+    newOption("conjunctions","Conjunctions");
+    newOption("prepositions","Prepositions");
+    newOption("interrogatives","Interrogatives");
+    newOption("common","Common words");
+    newOption("quantities","Quantities");
+    newOption("time","Time phrases");
+    newOption("days","Days & Months");
+    newOption("geography","Geography");
+    newOption("nationalities1","Nationalities I");
+    newOption("nationalities2","Nationalities II");
   };
   function loadSpanish() {
     $('#module option').remove();
     newOption("verbs1","Verbs I");
+    newOption("adj1","Adjectives I");
+    newOption("adj2","Adjectives II");
+    newOption("adj3","Adjectives III");
+    newOption("adj4","Adjectives IV");
     newOption("colours","Colours");
   };
   function loadJapanese() {
@@ -33,6 +48,8 @@ $(document).ready(function() {
   loadGerman();
 
   // WORD
+  var vocab = "";
+  var content = "";
   function drop(word) {
     word.id = "currWord";
     $('#word').append(word);
@@ -43,6 +60,39 @@ $(document).ready(function() {
     finishedArray = false;
     firstTry = true;
   };
+
+  // SHUFFLE
+    function shuffle(o){ //v1.0
+      for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+      return o;
+    };
+
+    // CREATE WORD
+    content = "";
+    function newWord() {
+      var word = document.createElement('p');
+
+      if ($('#targetLang').text() == "English") {
+        keyArray = shuffle(keyArray); // shuffle it!
+        content = keyArray[1];
+        if (typeof content == "object") {
+          content = shuffle(content);
+          content = content[1]
+        }
+      }
+      else {
+        kvalArray = shuffle(valArray); // shuffle it!
+        content = valArray[1];
+        if (typeof content == "object") {
+          content = shuffle(content);
+          content = content[1]
+        }
+      }
+
+      word.innerHTML = content;
+      return word;
+    };
+    var currWord = "";
 
   // TRANSLATION DIRECTION
   $('.glyphicon-refresh').click(function() {
@@ -95,7 +145,7 @@ $(document).ready(function() {
     for (var v in vocab) {
       valArray.push(vocab[v]);
     };
-    var content = "";
+    content = "";
   }
   resetArrays();
 
@@ -110,8 +160,9 @@ $(document).ready(function() {
     remaining = 60;
     score = 0;
     $('#score').text(score);
-    vocabList();
     resetArrays();
+    vocabList();
+    firstTry = true;
 
     if (open) {
       OpenWindow.close();
@@ -121,6 +172,7 @@ $(document).ready(function() {
     $('#stop').click(function() {
       remaining = 0;
       $('#start').text("Start");
+      firstTry = true;
     });
 
     // MAIN TIMER
@@ -164,148 +216,119 @@ $(document).ready(function() {
       },1000);
     };
 
-    // SHUFFLE
-      function shuffle(o){ //v1.0
-        for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
-        return o;
-      };
-
-      content = "";
-      function newWord() {
-        var word = document.createElement('p');
-
-        if ($('#targetLang').text() == "English") {
-          keyArray = shuffle(keyArray); // shuffle it!
-          content = keyArray[1];
-          if (typeof content == "object") {
-            content = shuffle(content);
-            content = content[1]
-          }
-        }
-        else {
-          kvalArray = shuffle(valArray); // shuffle it!
-          content = valArray[1];
-          if (typeof content == "object") {
-            content = shuffle(content);
-            content = content[1]
-          }
-        }
-
-        word.innerHTML = content;
-        return word;
-      };
-      var currWord = newWord();
-
-      // CREATE WORD
+      currWord = newWord();
       drop(currWord);
-      $('input').keydown(function() {
-        if(event.keyCode == 13) {
-          var answer = $('#answer').val();
-          $('#answer').val("");
 
-          // WHEN ENGLISH
-          if ($('#targetLang').text() == "English") {
+  });
 
-            // WHEN ARRAY
-            if (typeof vocab[content] == "object") {
-              for (var i = 0; i < vocab[content].length; i++) {
-                if (answer != vocab[content][i] && i == vocab[content].length - 1) {
-                  finishedArray = true;
-                };
-                if (answer == vocab[content][i]) {
-                  i = vocab[content].length;
-                  $('#currWord').remove();
-                  if (firstTry) {
-                    score += 5;
-                  }
-                  else {
-                    score += 2;
-                  }
-                  $('#score').text(score);
-                  currWord = newWord();
-                  drop(currWord);
-                  break;
-                }
-                else if (answer != vocab[content][i] && finishedArray == true) {
-                  firstTry = false;
-                }
-              }
-            }
+  // CHECK ANSWER
+  $('input').keydown(function() {
+    if(event.keyCode == 13) {
+      var answer = $('#answer').val();
+      $('#answer').val("");
+      console.log("When enter:" + firstTry);
 
-            // WHEN STRING
-            else {
-              if (answer == vocab[content]) {
-                $('#currWord').remove();
-                if (firstTry) {
-                  score += 5;
-                }
-                else {
-                  score += 2;
-                }
-                $('#score').text(score);
-                currWord = newWord();
-                drop(currWord);
-                firstTry = true;
+      // WHEN ENGLISH
+      if ($('#targetLang').text() == "English") {
+
+        // WHEN ARRAY
+        if (typeof vocab[content] == "object") {
+          for (var i = 0; i < vocab[content].length; i++) {
+            if (answer != vocab[content][i] && i == vocab[content].length - 1) {
+              finishedArray = true;
+            };
+            if (answer == vocab[content][i]) {
+              i = vocab[content].length;
+              $('#currWord').remove();
+              if (firstTry) {
+                score += 5;
               }
               else {
-                firstTry = false;
+                score += 2;
               }
+              $('#score').text(score);
+              currWord = newWord();
+              drop(currWord);
+              break;
+            }
+            else if (answer != vocab[content][i] && finishedArray == true) {
+              firstTry = false;
             }
           }
+        }
 
-          // WHEN FOREIGN LANGUAGE
-          else {
-
-            // WHEN ARRAY
-            if (typeof vocab[answer] == "object") {
-              for (var i = 0; i < vocab[answer].length; i++) {
-                if (content != vocab[answer][i] && i == vocab[answer].length - 1) {
-                  finishedArray = true;
-                };
-                if (content == vocab[answer][i]) {
-                  i = vocab[answer].length;
-                  $('#currWord').remove();
-                  if (firstTry) {
-                    score += 5;
-                  }
-                  else {
-                    score += 2;
-                  }
-                  $('#score').text(score);
-                  currWord = newWord();
-                  drop(currWord);
-                  break;
-                }
-                else if (content != vocab[answer][i] && finishedArray == true) {
-                  firstTry = false;
-                }
-              }
+        // WHEN STRING
+        else {
+          if (answer == vocab[content]) {
+            $('#currWord').remove();
+            if (firstTry) {
+              score += 5;
             }
-
-            // WHEN STRING
             else {
-              if (content == vocab[answer]) {
-                $('#currWord').remove();
-                if (firstTry) {
-                  score += 5;
-                }
-                else {
-                  score += 2;
-                }
-                $('#score').text(score);
-                currWord = newWord();
-                drop(currWord);
-                firstTry = true;
+              score += 2;
+            }
+            $('#score').text(score);
+            currWord = newWord();
+            drop(currWord);
+          }
+          else if (answer != vocab[content]) {
+            firstTry = false;
+            console.log("When wrong:" + firstTry);
+          }
+        }
+      }
+
+      // WHEN FOREIGN LANGUAGE
+      else {
+
+        // WHEN ARRAY
+        if (typeof vocab[answer] == "object") {
+          for (var i = 0; i < vocab[answer].length; i++) {
+            if (content != vocab[answer][i] && i == vocab[answer].length - 1) {
+              finishedArray = true;
+            };
+            if (content == vocab[answer][i]) {
+              i = vocab[answer].length;
+              $('#currWord').remove();
+              if (firstTry) {
+                score += 5;
               }
               else {
-                firstTry = false;
+                score += 2;
               }
+              $('#score').text(score);
+              currWord = newWord();
+              drop(currWord);
+              break;
+            }
+            else if (content != vocab[answer][i] && finishedArray == true) {
+              firstTry = false;
             }
           }
+        }
 
-        };
-      });
+        // WHEN STRING
+        else {
+          if (content == vocab[answer]) {
+            $('#currWord').remove();
+            if (firstTry) {
+              score += 5;
+            }
+            else {
+              score += 2;
+            }
+            $('#score').text(score);
+            currWord = newWord();
+            drop(currWord);
+          }
+          else if (answer != vocab[content]) {
+            firstTry = false;
+            console.log("When wrong:" + firstTry);
+          }
+        }
+      }
 
+    };
   });
 
   // VOCAB LIST WINDOW
@@ -541,7 +564,7 @@ $(document).ready(function() {
       case "Adjectives I":
         vocab = {
           "all": "all",
-          "alone": "allein",
+          "allein": "alone",
           "b\u00F6se": "angry",
           "zornig": "angry",
           "\u00E4rgerlich": "annoying",
@@ -718,6 +741,308 @@ $(document).ready(function() {
           "Neon-" : "neon",
         }
       break;
+      case "Adverbs":
+        vocab = {
+          "oben":["above","upstairs"],
+          "fast":"almost",
+          "schon":"already",
+          "immer":["always","still"],
+          "r\u00FCckw\u00E4rts":"backwards",
+          "unten":["below","downstairs"],
+          "unterwegs":"en route",
+          "besonders":"especially",
+          "vorw\u00E4rts":"forwards",
+          "hier":"here",
+          "jedoch":"however",
+          "sofort":["immediately","straight away"],
+          "mitten":"in the middle of",
+          "mehr":"more",
+          "nie":"never",
+          "oft":"often",
+          "da dr\u00FCben":"over there",
+          "vielleicht":"perhaps",
+          "wahrscheinlich":"probably",
+          "schnell":"quickly",
+          "lieber":"rather",
+          "ziemlich":"fairly",
+          "wirklich":"really",
+          "neulich":"recently",
+          "regelm\u00E4\u00DFig":"regularly",
+          "manchmal":"sometimes",
+          "irgendwo":"somewhere",
+          "da":"there",
+          "dort":"there",
+          "zu":"too",
+          "leider":"unfortunately",
+          "sehr":"very",
+          "gern":"willingly",
+        };
+      break;
+      case "Quantities":
+        vocab = {
+          "eine T\u00FCte":"a bag of",
+          "eine Tafel":"a bar of",
+          "eine Flasche":"a bottle of",
+          "ein Dutzend":"a dozen",
+          "ein Glas":"a jar of",
+          "ein bisschen":"a little of",
+          "eine Packung":"a packet of",
+          "ein St\u00FCck":"a piece of",
+          "eine Scheibe":"a slice of",
+          "ein Drittel":"a third of",
+          "eine Dose":["a tin","box of"],
+          "genug":"enough",
+          "viele":"many",
+          "mehrere":"several",
+        };
+      break;
+      case "Conjunctions":
+        vocab = {
+          "nachher":"afterwards",
+          "auch":"also",
+          "und":"and",
+          "vorher":"beforehand",
+          "aber":"but",
+          "zuerst":"first of all",
+          "deshalb":"for this reason",
+          "dewegen":"for this reason",
+          "daf\u00FCr":"instead",
+          "au\u00DFerdem":"moreover",
+          "\u00FCbrigens":"moreover",
+          "oder":"or",
+          "also":"so",
+          "dann":"then",
+        };
+      break;
+      case "Time phrases":
+        vocab = {
+          "der Nachmittag":"afternoon",
+          "immer":"always",
+          "am Anfang":"at the start",
+          "der Tag":"day",
+          "fr\u00FCh":"early",
+          "der Abend":"evening",
+          "t\u00E4glich":"every day",
+          "ab":"from",
+          "ab und zu":"from time to time",
+          "von Zeit zu Zeit":"from time to time",
+          "sofort":"immediately",
+          "sp\u00E4t":"late",
+          "sp\u00E4ter":"later",
+          "die Mitternacht":"midnight",
+          "die Minute":"minute",
+          "der Morgen":"morning",
+          "der Vormittag":"morning",
+          "meistens":"mostly",
+          "n\u00E4chst-":"next",
+          "die Nacht":"night",
+          "jetzt":"now",
+          "heutzutage":"nowadays",
+          "p\u00FCnktlich":"on time",
+          "rechtzeitig":"on time",
+          "seit":"since",
+          "bald":"soon",
+          "immer noch":"still",
+          "\u00FCbermorgen":"the day after tomorrow",
+          "heute":"today",
+          "morgen":"tomorrow",
+          "morgen fr\u00FCh":"tomorrow morning",
+          "Woche":"week",
+          "das Wochenende":"weekend",
+          "w\u00F6chentlich":"weekly",
+          "gestern":"yesterday",
+        };
+      break;
+      case "Days & Months":
+        vocab = {
+          "Montag":"Monday",
+          "Dienstag":"Tuesday",
+          "Mittwoch":"Wednesday",
+          "Donnerstag":"Thursday",
+          "Freitag":"Friday",
+          "Samstag":"Saturday",
+          "Sonnabend":"Saturday",
+          "Sonntag":"Sunday",
+          "Januar":"January",
+          "Februar":"February",
+          "M\u00E4rz":"March",
+          "April":"April",
+          "Mai":"May",
+          "Juni":"June",
+          "Juli":"July",
+          "August":"August",
+          "September":"September",
+          "Oktober":"October",
+          "November":"November",
+          "Dezember":"December",
+        };
+      break;
+      case "Interrogatives":
+        vocab = {
+          "wie viel?":"how much?",
+          "wie viele?":"how many?",
+          "wie?":"how?",
+          "was f\u00FCr?":"what sort of?",
+          "was?":"what?",
+          "wann?":"when?",
+          "wo?":"where?",
+          "wer?":"who? whom?",
+          "wen?":"whom?",
+          "wem?":"to whom?",
+          "wessen?":"whose?",
+          "warum?":"why?",
+        };
+      break;
+      case "Common words":
+        vocab = {
+          "wie":["as","like"],
+          "weil":"because",
+          "das Ende":"end",
+          "jeder":"everybody",
+          "alle":"everyone",
+          "die Zahl":"figure",
+          "zum Beispiel":"for example",
+          "wenn":"if",
+          "die Mitte":"middle",
+          "Herr":"Mr",
+          "Frau":"Mrs",
+          "nein":"no",
+          "die Nummer":"number",
+          "der Gegenstand":"object",
+          "die Form":"shape",
+          "jemand":"someone",
+          "irgendetwas":"something",
+          "das":"that",
+          "das Ding":"thing",
+          "die Sache":"thing",
+          "das Mal":"time",
+          "die Art":"type",
+          "die Weise":"way",
+          "ob":"whether",
+          "ja":"yes",
+        };
+      break;
+      case "Geography":
+        vocab = {
+          "\u00D6sterreich":"Austria",
+          "Belgien":"Belgium",
+          "D\u00E4nemark":"Denmark",
+          "England":"England",
+          "Frankreich":"France",
+          "Deutschland":"Germany",
+          "Gro\u00DFbritannien":"Great Britain",
+          "Griechenland":"Greece",
+          "Holland":"Holland",
+          "Indien":"India",
+          "Irland":"Ireland",
+          "Italien":"Italy",
+          "die Niederlanden":"Netherlands",
+          "Russland":"Russia",
+          "Schottland":"Scotland",
+          "Spanien":"Spain",
+          "die Schweiz":"Switzerland",
+          "die T\u00FCrkei":"Turkey",
+          "die Vereinigten Staaten":"United States",
+          "Wales":"Wales",
+          "Afrika":"Africa",
+          "Asien":"Asia",
+          "Australien":"Australia",
+          "Europa":"Europe",
+          "Nordamerika":"North America",
+          "S\u00FCdamerika":"South America",
+          "Bayern":"Bavaria",
+          "K\u00F6ln":"Cologne",
+          "Genf":"Geneva",
+          "der Bodensee":"Lake Constance",
+          "M\u00FCnchen":"Munich",
+          "die Alpen":"the Alps",
+          "der Schwarzwald":"the Black Forest",
+          "der Tunnel":"the Channel Tunnel",
+          "die Donau":"the Danube",
+          "der \u00C4rmelkanal":"the English Channel",
+          "der Rhein":"the Rhine",
+          "Wien":"Vienna",
+        };
+      break;
+      case "Nationalities I":
+        vocab = {
+          "Afrikaner":"African",
+          "Amerikaner":"American",
+          "\u00D6sterreicher":"Austrian",
+          "Belger":"Belgian",
+          "Brite":"British",
+          "D\u00E4ne":"Danish",
+          "Holl\u00E4nder":"Dutch",
+          "Engl\u00E4nder":"English",
+          "Europ\u00E4er":"European",
+          "Franzose":"French",
+          "Deutscher":"German",
+          "Grieche":"Greek",
+          "Ire":"Irish",
+          "Italiener":"Italian",
+          "Russe":"Russian",
+          "Schotte":"Scottish",
+          "Spanier":"Spanish",
+          "Schweizer":"Swiss",
+          "Waliser":"Welsh",
+        };
+      break;
+      case "Nationalities II":
+        vocab = {
+          "afrikanisch":"African",
+          "amerikanisch":"American",
+          "\u00F6sterreichisch":"Austrian",
+          "belgisch":"Belgian",
+          "britisch":"British",
+          "d\u00E4nisch":"Danish",
+          "holl\u00E4ndisch":"Dutch",
+          "englisch":"English",
+          "europ\u00E4isch":"European",
+          "franz\u00F6sisch":"French",
+          "deutsch":"German",
+          "griechisch":"Greek",
+          "irisch":"Irish",
+          "italienisch":"Italian",
+          "russisch":"Russian",
+          "schottisch":"Scottish",
+          "spanisch":"Spanish",
+          "schweizerisch":"Swiss",
+          "walisisch":"Welsh",
+        };
+      break;
+      case "Prepositions":
+        vocab = {
+          "\u00FCber":["above","over"],
+          "nach":"after",
+          "entlang":"along",
+          "um":"around",
+          "an":"at",
+          "wegen":"because of",
+          "hinter":"behind",
+          "unter":["beneath","under"],
+          "zwischen":"between",
+          "trotz":"despite",
+          "w\u00E4hrend":"during",
+          "au\u00DFer":"except",
+          "f\u00FCr":"for",
+          "von":"from",
+          "vor":"in front of",
+          "in":["in","into"],
+          "statt":"instead of",
+          "neben":"next to",
+          "auf":"on",
+          "gegen\u00FCber":"opposite",
+          "aus":"out of",
+          "seit":"since",
+          "durch":"through",
+          "zu":"to",
+          "gegen":"towards",
+          "bis":"until",
+          "mit":"with",
+          "bei":["with","next to"],
+          "ohne":"without",
+        };
+      break;
       }
     break;
     case "Spanish":
@@ -763,6 +1088,133 @@ $(document).ready(function() {
           "traer" : "to bring",
           "cepillarse" : "to brush",
         };
+        break;
+        case "Adjectives I":
+          vocab = {
+            "activo":"active",
+            "todo":"all",
+            "solo":["alone","lonely"],
+            "enfadado":"angry",
+            "horrible":"awful",
+            "bello":"beautiful",
+            "grande":["big","tall"],
+            "aburrido":"boring",
+            "valiente":"brave",
+            "breve":"brief",
+            "brillante":"brilliant",
+            "roto":"broken",
+            "casta\u00F1o":"chestnut brown",
+            "limpio":"clean",
+            "cercano":"close",
+            "cerrado":"closed",
+            "c\u00F3modo":"comfortable",
+            "guay":"cool",
+            "dif\u00EDcil":"difficult",
+            "sucio":"dirty",
+            "asqueroso":"disgusting",
+            "din\u00E1mico":"dynamic",
+            "f\u00E1cil":"easy",
+            "ilusionado":"excited",
+            "emocionante":"exciting",
+            "falso":"false",
+            "r\u00E1pido":["fast","quick"],
+            "gordo":"fat",
+            "favorito":"favourite",
+          };
+        break;
+        case "Adjectives II":
+          vocab = {
+            "preferido":"favourite",
+            "flexible":"flexible",
+            "antiguo":["former","antique","old"],
+            "gratis":"free",
+            "libre":"free",
+            "lleno":"full",
+            "divertido":["funny","entertaining","amusing"],
+            "bueno":"good",
+            "agradecido":"grateful",
+            "estupendo":"great",
+            "fant\u00E1stico":"great",
+            "gran":"great",
+            "formidable":["great","marvellous"],
+            "guapo":["handsome","pretty","charming"],
+            "alegre":["happy","cheerful"],
+            "duro":"hard",
+            "trabajador":"hardworking",
+            "sano":"healthy",
+            "pesado":"heavy",
+            "alto":["high","tall"],
+            "caliente":"hot",
+            "de buen humor":"in a good mood",
+            "simp\u00E1tico":"kind",
+            "\u00FAltimo":["last","latest"],
+            "perezoso":"lazy",
+            "ligero":"light",
+            "animado":"lively",
+            "local":"local",
+            "cerrado con llave":"locked",
+          };
+        break;
+        case "Adjectives III":
+          vocab = {
+            "largo":"long",
+            "perdido":"lost",
+            "magn\u00EDfico":"magnificent",
+            "maravilloso":"marvellous",
+            "maduro":"mature",
+            "travieso":"naughty",
+            "necesario":"necessary",
+            "nuevo":"new",
+            "pr\u00F3ximo":"next",
+            "ruidoso":"noisy",
+            "numeroso":"numerous",
+            "viejo":"old",
+            "abierto":"open",
+            "otro":"other",
+            "propio":"own",
+            "perfecto":"perfect",
+            "listo":"ready",
+            "real":["real","royal"],
+            "responsible":"responsible",
+            "rico":["rich","delicious"],
+            "podrido":"rotten",
+            "igual":"same",
+            "mismo":"same",
+            "satisfecho":"satisfied",
+            "sensacional":"sensational",
+            "serio":"serious",
+            "corto":"short",
+            "t\u00EDmido":"shy",
+          };
+        break;
+        case "Adjectives IV":
+          vocab = {
+            "silencioso":"silent",
+            "est\u00FApido":"stupid",
+            "tonto":"silly",
+            "peque\u00F1o":"small",
+            "buscado":"sought after",
+            "de pie":"standing",
+            "severo":"strict",
+            "estricto":"strict",
+            "fuerte":"strong",
+            "delgado":"thin",
+            "fatigado":"tired",
+            "cansado":"tired",
+            "junto":"together",
+            "tradicional":"traditional",
+            "verdadero":"true",
+            "feo":"ugly",
+            "incre\u00EDble":"unbelievable",
+            "antip\u00E1tico":"unpleasant",
+            "\u00FAtil":"useful",
+            "v\u00E1lido":"valid",
+            "valioso":"valuable",
+            "variable":"variable",
+            "d\u00E9bil":"weak",
+            "sabio":"wise",
+            "joven":"young",
+          };
         break;
         case "Colours":
           vocab = {
