@@ -56,6 +56,7 @@ $(document).ready(function() {
     newOption("kanji2","Kanji II");
     newOption("kanji3","Kanji III");
     newOption("kanji4","Kanji IV");
+    newOption("kanji5","Kanji V");
     newOption("conjunctions","Conjunctions");
   };
 
@@ -237,7 +238,7 @@ $(document).ready(function() {
 
   // CHECK ANSWER
   $('input').keydown(function() {
-    if(event.keyCode == 13) {
+    if(event.keyCode == 13 && $('#answer').val() != "") {
       var answer = $('#answer').val();
       $('#answer').val("");
       console.log("When enter:" + firstTry);
@@ -1765,7 +1766,7 @@ $(document).ready(function() {
           "\u6301\u3064": ["hold","carry"],
           "\u592B": "husband",
           "\u7530": "field",
-          "\u529B": "power",
+          "\u529B": ["power","strength"],
           "\u8ECA": ["vehicle","car"],
           "\u8AAD\u3080": "read",
           "\u8005": "person",
@@ -1806,6 +1807,7 @@ $(document).ready(function() {
           "\u5DE5\u4E8B": "construction",
           "\u5929": "heavens",
           "\u767D\u3044": "white",
+          "\u5FC3": ["heart","mind"],
           "\u4EE3\u308F\u308A": ["replacement","exchange"],
           "\u4EA4\u308F\u308B": ["associate","socialise"],
           "\u6BCD": "mother",
@@ -1822,6 +1824,42 @@ $(document).ready(function() {
           "\u5DE6\u53F3": ["left and right","influence"],
         };
       break;
+      case "Kanji V":
+        vocab = {
+          "\u5B66\u6821": "school",
+          "\u6BCE": "every",
+          "\u53E4\u3044": "old",
+          "\u601D\u3046": ["think","feel"],
+          "\u5F53\u305F\u308B": "hit the mark",
+          "\u672C\u5F53": ["real","true"],
+          "\u76F8\u624B": "opponent",
+          "\u5B89\u3044": "cheap",
+          "\u5B89\u5FC3": "calm",
+          "\u6D77": "sea",
+          "\u8ECD": "army",
+          "\u91CC": ["village","ri"],
+          "\u7389": ["ball","jewel"],
+          "\u7406": "reason",
+          "\u9580": "gate",
+          "\u5143": "origin",
+          "\u8033": "ear",
+          "\u53D6\u308B": "take",
+          "\u805E\u304F": ["hear","listen","ask"],
+          "\u7528": ["business","use","errands"],
+          "\u56FD": ["associate","socialise"],
+          "\u7C73": "rice",
+          "\u8ECD\u4EBA": "soldier",
+          "\u6D77\u5916": "overseas",
+          "\u77F3\u5316": "petrification",
+          "\u5C0F\u77F3": "pebble",
+          "\u77F3\u9580": "stone gate",
+          "\u8033\u76EE": "attention",
+          "\u66F8\u304D\u53D6\u308A": "dictation",
+          "\u53D6\u308A\u4EA4\u305C\u308B": "mix in",
+          "\u7528\u304C\u3042\u308B": "have things to do",
+          "\u5916\u56FD": "foreign country",
+          "\u6BCE\u65E5": "every day",
+        }
       case "Conjunctions":
         vocab = {
           "\u3067\u3082": "but",
