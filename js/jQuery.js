@@ -1860,6 +1860,7 @@ $(document).ready(function() {
           "\u5916\u56FD": "foreign country",
           "\u6BCE\u65E5": "every day",
         }
+      break;
       case "Conjunctions":
         vocab = {
           "\u3067\u3082": "but",
