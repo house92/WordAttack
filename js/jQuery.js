@@ -168,6 +168,7 @@ $(document).ready(function() {
 
   // BUTTON CLICK
   $('#start').click(function() {
+    vocabList();
     $('#answer').prop("disabled",false);
     $('#answer').val("");
     $('#answer').focus();
@@ -427,6 +428,7 @@ $(document).ready(function() {
 
   $('#module').change(vocabList());
   $('#lang').change(function() {
+    vocabList();
     $('#targetLang').text("English");
     if ($('#lang').val() == "German") {
       loadGerman();
