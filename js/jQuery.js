@@ -223,7 +223,7 @@ $(document).ready(function() {
       setTime = wordRemaining;;
       var wordCountdown = setInterval(function() {
         wordRemaining -= 1;
-        $('#wordCountdown').text(wordRemaining +1);
+        $('#wordCountdown').text(wordRemaining);
         if (wordRemaining <= 0) {
           $('#currWord').remove();
           currWord = newWord();
